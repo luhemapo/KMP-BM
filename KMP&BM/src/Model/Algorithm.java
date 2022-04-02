@@ -12,7 +12,7 @@ public class Algorithm {
 		Collections.addAll(linesOnFile, file.split("\n"));
 	}
 
-	public ArrayList<Integer> readLines(String searchFor) {
+	public ArrayList<Integer> kmpReadLines(String searchFor) {
 
 		String line = "";
 		int result = 0;
@@ -25,6 +25,28 @@ public class Algorithm {
 			if (result != -1) {
 				total += result;
 				location.add(total + 2);
+				total -= (result);
+			}
+			total += linesOnFile.get(i).length() + 1;
+		}
+		
+		return location;
+
+	}
+	
+	public ArrayList<Integer> bmReadLines(String searchFor) {
+
+		String line = "";
+		int result = 0;
+		int total = 0;
+		ArrayList<Integer> location = new ArrayList<>();
+
+		for (int i = 0; i < linesOnFile.size(); i++) {
+			line = linesOnFile.get(i).trim();
+			result = boyerMooreAlgorithm(line, searchFor);
+			if (result != -1) {
+				total += result;
+				location.add(total);
 				total -= (result);
 			}
 			total += linesOnFile.get(i).length() + 1;
@@ -78,5 +100,57 @@ public class Algorithm {
 			}
 		}
 		return tabla;
+	}
+	
+	public int[] BoyerMooreTable(int[] table, char[] searchFor, int ptnLen) {
+		int count = 0;
+
+	    for(count = 0; count < table.length; count++){
+	    	table[count] = ptnLen;
+	    }
+
+	    for(count = 0; count < ptnLen; count++){
+	    	table[(int)searchFor[count]] = ptnLen - count - 1;
+	    }
+
+	    return table;
+	}
+	
+	public int boyerMooreAlgorithm(String line, String searchFor) {
+		int table[] = new int[256] ;
+		int txtLen = 0;
+		int ptnLen = 0;
+		int i = 0; 
+		int j = 0; 
+
+		txtLen = line.toCharArray().length;
+		ptnLen = searchFor.toCharArray().length;
+		
+		table= BoyerMooreTable(table, searchFor.toCharArray(),ptnLen);
+
+
+	    i = j = ptnLen - 1; 
+	    while((i < txtLen) && (j >= 0)){
+
+	        if(line.toCharArray()[i] != searchFor.toCharArray()[j]){
+	        	int next = (ptnLen - j);
+	        	 if(table[(int)line.toCharArray()[i]] > (ptnLen - j)){
+	 		        next=table[(int)line.toCharArray()[i]];
+	 		    }else{
+	 		        next=(ptnLen - j);
+	 		    }
+	            i += next;
+	            j = ptnLen - 1;  
+	        }else{
+	            j--;
+	            i--;
+	        }
+	    }
+
+	    if(j < 0) {
+	    	return i + 1;
+	    }else {
+		    return -1;
+	    }
 	}
 }
