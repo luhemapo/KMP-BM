@@ -114,7 +114,7 @@ public class ViewSearch extends JFrame{
 			highlighter.addHighlight(pos0, pos1, painter);
 
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 
