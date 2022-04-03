@@ -81,7 +81,27 @@ public class Controller implements ActionListener {
 
 	public void runSearchKMP() {
 		String searchFor = viewS.getText().getText();
-		ArrayList<Integer> matchesFound = algorithm.readLines(searchFor);
+		ArrayList<Integer> matchesFound = algorithm.kmpReadLines(searchFor);
+		int start;
+		int end;
+		Highlighter highlighter = viewS.getHighlighter();
+		highlighter.removeAllHighlights();
+		for (int posicion : matchesFound) {
+			start = posicion;
+			end = start + searchFor.length();
+			if (start != -1) {
+				viewS.showPattern(start, end, highlighter);
+			}
+		}
+		viewS.showMatches(matchesFound.size());
+		if (matchesFound.isEmpty()) {
+			viewS.noPattern();
+		}
+	}
+	
+	public void runSearchBM() {
+		String searchFor = viewS.getText().getText();
+		ArrayList<Integer> matchesFound = algorithm.bmReadLines(searchFor);
 		int start;
 		int end;
 		Highlighter highlighter = viewS.getHighlighter();
@@ -122,7 +142,7 @@ public class Controller implements ActionListener {
 		} else if (e.getActionCommand().equals("SEARCHKMP")) {
 			runSearchKMP();
 		} else if (e.getActionCommand().equals("SEARCHBM")) {
-			// CORRER ALGORITMO BOYER MOORE
+			runSearchBM();
 		}
 		
 	}
