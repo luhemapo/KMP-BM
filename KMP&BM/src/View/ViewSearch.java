@@ -27,7 +27,7 @@ public class ViewSearch extends JFrame{
 	private JLabel backgroundImg;
 	
 	private JTextArea file;
-	private JTextField text;
+	private JTextField tf_text;
 	private JLabel tipoArchivo;
 	private JLabel matches;
 
@@ -93,12 +93,12 @@ public class ViewSearch extends JFrame{
 		add(scroll);
 
 
-		text = new JTextField();
-		text.setHorizontalAlignment((int) CENTER_ALIGNMENT);
-		text.setFont(fuente);
-		text.setBorder(null);
-		text.setBounds(980, 120, 300, 60);
-		add(text);
+		tf_text = new JTextField();
+		tf_text.setHorizontalAlignment((int) CENTER_ALIGNMENT);
+		tf_text.setFont(fuente);
+		tf_text.setBorder(null);
+		tf_text.setBounds(980, 120, 300, 60);
+		add(tf_text);
 
 		setVisible(false);
 		add(backgroundImg);
@@ -122,10 +122,6 @@ public class ViewSearch extends JFrame{
 		Highlighter highlighter = file.getHighlighter();
 		highlighter.removeAllHighlights();
 		JOptionPane.showMessageDialog(this, "No se encontro el patron buscado","No encontrado", JOptionPane.ERROR_MESSAGE);
-	}
-
-	public void mostrarTipoArchivo(String ext){
-		tipoArchivo.setText("TIPO DE ARCHIVO: " + ext.toUpperCase());
 	}
 
 	public void showMatches(int times){
@@ -177,13 +173,14 @@ public class ViewSearch extends JFrame{
 		this.file = file;
 	}
 
-	public JTextField getText() {
-		return text;
+	public JTextField getTf_text() {
+		return tf_text;
 	}
 
-	public void setText(JTextField text) {
-		this.text = text;
+	public void setTf_text(JTextField tf_text) {
+		this.tf_text = tf_text;
 	}
+
 	public Highlighter getHighlighter(){
 		return file.getHighlighter();
 	}

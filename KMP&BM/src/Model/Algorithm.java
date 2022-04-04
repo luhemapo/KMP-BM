@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class Algorithm {
 	public ArrayList<String> linesOnFile = new ArrayList<>();
+	public ArrayList<Integer> ans = new ArrayList<>();
 
 	public Algorithm(String file) {
 
@@ -12,27 +13,7 @@ public class Algorithm {
 		Collections.addAll(linesOnFile, file.split("\n"));
 	}
 
-	public ArrayList<Integer> kmpReadLines(String searchFor) {
 
-		String line = "";
-		int result = 0;
-		int total = 0;
-		ArrayList<Integer> location = new ArrayList<>();
-
-		for (int i = 0; i < linesOnFile.size(); i++) {
-			line = linesOnFile.get(i).trim();
-			result = KMPAlgorithm(line, searchFor);
-			if (result != -1) {
-				total += result;
-				location.add(total + 2);
-				total -= (result);
-			}
-			total += linesOnFile.get(i).length() + 1;
-		}
-		
-		return location;
-
-	}
 	
 	public ArrayList<Integer> bmReadLines(String searchFor) {
 
@@ -88,54 +69,59 @@ public class Algorithm {
 		}catch(IndexOutOfBoundsException e) {
 			
 		}
-		
 		return location;
 
 	}
-	public int KMPAlgorithm(String line, String searchFor) {
-		int[] kmptabla = kmptabla(searchFor);
-
-		int contSearch = 0;
-		int contLine = 0;
-
-		while (contLine < line.length()) {
-			if (line.toUpperCase().charAt(contLine) == searchFor.toUpperCase().charAt(contSearch)) {
-				contSearch++;
-				if (contSearch == searchFor.length()) {
-					int x = searchFor.length() + 1;
-					return contLine - x;
+	public ArrayList<Integer> KMPAlgorithm(String line, String searchFor) {
+		int m = searchFor.length();
+		int n = line.length();
+		int lps[] = new int[m];
+		int j = 0;
+		int i = 0;
+		if(m != 0) {
+			while (i < n) {
+				if (searchFor.charAt(j) == line.charAt(i)) {
+					j++;
+					i++;
 				}
-				contLine++;
-			} else if (contSearch > 0) {
-				contSearch = kmptabla[contSearch];
-			} else {
-				contLine++;
-			}
+				if (j == m) {
+						ans.add((i - j));
+						j = lps[j - 1];
+				}
+
+				else if (i < n && searchFor.charAt(j) != line.charAt(i)) {
+					if (j != 0)
+						j = lps[j - 1];
+					else
+						i = i + 1;
+				}
+			}	
 		}
-		return -1;
+		
+		return ans;
 	}
 
-	public int[] kmptabla(String searchFor) {
-		int[] tabla = new int[searchFor.length() + 1];
-		tabla[0] = -1;
-		tabla[1] = 0;
+	public int[] kmptable(String searchFor) {
+		int[] table = new int[searchFor.length() + 1];
+		table[0] = -1;
+		table[1] = 0;
 
-		int piz = 0;
-		int pder = 2;
+		int posLeft = 0;
+		int posRight = 2;
 
-		while (pder < tabla.length) {
-			if (searchFor.charAt(pder - 1) == searchFor.charAt(piz)) {
-				piz++;
-				tabla[pder] = piz;
-				pder++;
-			} else if (piz > 0) {
-				piz = tabla[piz];
+		while (posRight < table.length) {
+			if (searchFor.charAt(posRight - 1) == searchFor.charAt(posLeft)) {
+				posLeft++;
+				table[posRight] = posLeft;
+				posRight++;
+			} else if (posLeft > 0) {
+				posLeft = table[posLeft];
 			} else {
-				tabla[pder] = piz;
-				pder++;
+				table[posRight] = posLeft;
+				posRight++;
 			}
 		}
-		return tabla;
+		return table;
 	}
 	
 	public int[] BoyerMooreTable(int[] table, char[] searchFor, int ptnLen) {
@@ -189,4 +175,7 @@ public class Algorithm {
 		    return -1;
 	    }
 	}
+
+	
+	
 }

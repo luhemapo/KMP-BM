@@ -18,10 +18,10 @@ import View.ViewSearch;
 import View.ViewWindow;
 
 public class Controller implements ActionListener {
-	ViewWindow viewW;
-	ViewSearch viewS;
-	Algorithm algorithm;
-
+	public ViewWindow viewW;
+	public ViewSearch viewS;
+	public Algorithm algorithm;
+	public String texto = "";
 	public Controller() {
 		viewW = new ViewWindow();
 		viewS = new ViewSearch();
@@ -56,6 +56,7 @@ public class Controller implements ActionListener {
 				}
 			}
 		}
+		texto = txt;
 		return txt;
 	}
 
@@ -80,15 +81,16 @@ public class Controller implements ActionListener {
 	}
 
 	public void runSearchKMP() {
-		String searchFor = viewS.getText().getText();
-		ArrayList<Integer> matchesFound = algorithm.kmpReadLines(searchFor);
+		String searchFor = viewS.getTf_text().getText();
+		ArrayList<Integer> matchesFound = algorithm.KMPAlgorithm(texto,searchFor);
+	
 		int start;
 		int end;
 		Highlighter highlighter = viewS.getHighlighter();
 		highlighter.removeAllHighlights();
-		for (int posicion : matchesFound) {
-			start = posicion;
-			end = start + searchFor.length();
+		for (int i = 0; i < matchesFound.size();i++) {
+			start = matchesFound.get(i);
+			end = matchesFound.get(i) + searchFor.length();
 			if (start != -1) {
 				viewS.showPattern(start, end, highlighter);
 			}
@@ -100,21 +102,31 @@ public class Controller implements ActionListener {
 	}
 	
 	public void runSearchBM() {
-		String searchFor = viewS.getText().getText();
+		String searchFor = viewS.getTf_text().getText();
 		ArrayList<Integer> matchesFound = algorithm.bmReadLines(searchFor);
 		int start;
+		int starC=0;;
+		int endC=0;;
 		int end;
+		int count=0;
 		Highlighter highlighter = viewS.getHighlighter();
 		highlighter.removeAllHighlights();
 		for (int posicion : matchesFound) {
 			start = posicion;
 			end = start + searchFor.length();
+			if(start!=starC && end!=endC) {
+				count++;
+			}
 			if (start != -1) {
 				viewS.showPattern(start, end, highlighter);
+				
 			}
+			starC=start;
+			endC=end;
 		}
-		viewS.showMatches(matchesFound.size());
-		if (matchesFound.isEmpty()) {
+		
+		viewS.showMatches(count);
+		if (matchesFound.isEmpty() || count==0) {
 			viewS.noPattern();
 		}
 	}
@@ -140,7 +152,9 @@ public class Controller implements ActionListener {
 			viewS.getBt_searchKMP().setVisible(false);
 			viewS.getBt_searchBM().setVisible(false);
 		} else if (e.getActionCommand().equals("SEARCHKMP")) {
+			algorithm.ans.clear();
 			runSearchKMP();
+
 		} else if (e.getActionCommand().equals("SEARCHBM")) {
 			runSearchBM();
 		}
