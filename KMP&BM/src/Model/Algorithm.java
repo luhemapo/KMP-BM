@@ -15,9 +15,10 @@ public class Algorithm {
 
 
 	
-	public ArrayList<Integer> bmReadLines(String searchFor) {
+	public ArrayList<Integer> bmReadLines(String search) {
 
 		String line = "";
+		String searchFor = search.toLowerCase();
 		int result = 0;
 		int total = 0;
 		int count=0;
@@ -26,7 +27,7 @@ public class Algorithm {
 		try {
 			for (int i = 0; i < linesOnFile.size(); i++) {
 				line = linesOnFile.get(i).trim();
-				char[] txt= line.toCharArray();
+				char[] txt= line.toLowerCase().toCharArray();
 				result = boyerMooreAlgorithm(txt, searchFor);
 				if (result != -1) {
 					total += result;
@@ -99,29 +100,6 @@ public class Algorithm {
 		}
 		
 		return ans;
-	}
-
-	public int[] kmptable(String searchFor) {
-		int[] table = new int[searchFor.length() + 1];
-		table[0] = -1;
-		table[1] = 0;
-
-		int posLeft = 0;
-		int posRight = 2;
-
-		while (posRight < table.length) {
-			if (searchFor.charAt(posRight - 1) == searchFor.charAt(posLeft)) {
-				posLeft++;
-				table[posRight] = posLeft;
-				posRight++;
-			} else if (posLeft > 0) {
-				posLeft = table[posLeft];
-			} else {
-				table[posRight] = posLeft;
-				posRight++;
-			}
-		}
-		return table;
 	}
 	
 	public int[] BoyerMooreTable(int[] table, char[] searchFor, int ptnLen) {

@@ -6,6 +6,7 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,7 +26,7 @@ public class ViewSearch extends JFrame{
 	private JLabel type;
 	private ImageIcon img;
 	private JLabel backgroundImg;
-	
+	private JCheckBox check;
 	private JTextArea file;
 	private JTextField tf_text;
 	private JLabel tipoArchivo;
@@ -49,6 +50,13 @@ public class ViewSearch extends JFrame{
 		matches.setFont(fuentearchivo);
 		matches.setForeground(Color.black);
 		add(matches);
+		
+		setLayout(null);
+        check=new JCheckBox("Make search case sensitive");
+        check.setBounds(980, 200, 200, 30);
+        //check.setVisible(true);
+        add(check);
+
 
 		bt_searchKMP = new JButton("Search KMP");
 		bt_searchKMP.setActionCommand("SEARCHKMP");
@@ -123,9 +131,25 @@ public class ViewSearch extends JFrame{
 		highlighter.removeAllHighlights();
 		JOptionPane.showMessageDialog(this, "No se encontro el patron buscado","No encontrado", JOptionPane.ERROR_MESSAGE);
 	}
-
+	
 	public void showMatches(int times){
 		matches.setText("Matches found: " + times );
+	}
+	
+	public JCheckBox getCheck() {
+		return check;
+	}
+
+	public void setCheck(JCheckBox check) {
+		this.check = check;
+	}
+
+	public JLabel getMatches() {
+		return matches;
+	}
+
+	public void setMatches(JLabel matches) {
+		this.matches = matches;
 	}
 
 	public JButton getBt_searchKMP() {

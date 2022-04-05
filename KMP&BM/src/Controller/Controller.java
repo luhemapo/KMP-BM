@@ -1,5 +1,6 @@
 package Controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -32,6 +33,7 @@ public class Controller implements ActionListener {
 		viewS.getBt_back().addActionListener(this);
 		viewS.getBt_searchKMP().addActionListener(this);
 		viewS.getBt_searchBM().addActionListener(this);
+		viewS.getCheck().addActionListener(this);
 	}
 
 	public String readTxt(File txtfile) {
@@ -81,8 +83,13 @@ public class Controller implements ActionListener {
 	}
 
 	public void runSearchKMP() {
+		ArrayList<Integer> matchesFound = new ArrayList<Integer>();
 		String searchFor = viewS.getTf_text().getText();
-		ArrayList<Integer> matchesFound = algorithm.KMPAlgorithm(texto,searchFor);
+		if(viewS.getCheck().isSelected()) {
+			matchesFound = algorithm.KMPAlgorithm(texto,searchFor);	
+		}else {
+			matchesFound = algorithm.KMPAlgorithm(texto.toLowerCase(),searchFor.toLowerCase());
+		}
 	
 		int start;
 		int end;
@@ -135,11 +142,15 @@ public class Controller implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("KMP")) {
 			chooseFile();
+			viewS.getTf_text().setText("");
+			viewS.getMatches().setText("");
 			viewS.getBt_searchKMP().setVisible(true);
 			viewS.getBt_searchBM().setVisible(false);
 
 		} else if (e.getActionCommand().equals("BM")) {
 			chooseFile();
+			viewS.getTf_text().setText("");
+			viewS.getMatches().setText("");
 			viewS.getBt_searchKMP().setVisible(false);
 			viewS.getBt_searchBM().setVisible(true);
 		} else if (e.getActionCommand().equals("EXIT")) {
