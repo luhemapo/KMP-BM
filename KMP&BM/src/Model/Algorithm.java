@@ -1,14 +1,28 @@
 package Model;
 
 import java.util.ArrayList;
-
+/**
+ * Clase que contiene el algoritmo
+ */
 public class Algorithm {
+	/**
+	 * Lista en la que se encuentrara cada fila del archivo leido
+	 */
 	public ArrayList<Integer> ans = new ArrayList<>();
-
-	public Algorithm() {
-
-	}
-
+	/**
+	 * Metodo encargado de ejecutar el algoritmo BM
+	 * <br>
+	 * <b>Pre:</b>
+	 * <br>
+	 * La clase esta correctamente inicializada
+	 * <br>
+	 * <b>Post:</b>
+	 * <br>
+	 * Se encontra el patron dentro del texto del archivo
+	 * @param texto String que contiene el texto donde se buscara coinsidencia
+	 * @param searchFor String que se desea buscar en el archivo
+	 * @return Las posiciones en las que se encuentra la palabra
+	 */
 	public ArrayList<Integer> bmReadLines(String texto,String searchFor) {
 
 		String[] linesOnFile = texto.split("\n");
@@ -65,9 +79,21 @@ public class Algorithm {
 			
 		}
 		return location;
-
 	}
-	
+	/**
+	 * Metodo encargado de ejecutar el algoritmo KMP
+	 * <br>
+	 * <b>Pre:</b>
+	 * <br>
+	 * La clase esta correctamente inicializada
+	 * <br>
+	 * <b>Post:</b>
+	 * <br>
+	 * Se encontra el patron dentro del texto del archivo
+	 * @param line String que contiene el texto donde se buscara coinsidencia
+	 * @param searchFor String que se desea buscar en el archivo
+	 * @return Las posiciones en las que se encuentra la palabra
+	 */
 	public ArrayList<Integer> KMPAlgorithm(String line, String searchFor) {
 		int m = searchFor.length();
 		int n = line.length();
@@ -96,7 +122,21 @@ public class Algorithm {
 		
 		return ans;
 	}
-		
+	
+	/**
+	 * Metodo que contiene el algoritmo BM
+	 * <br>
+	 * <b>Pre:</b>
+	 * <br>
+	 * La cadena y el patron son textos validos
+	 * <br>
+	 * <b>Post:</b>
+	 * <br>
+	 * Se encontra el patron dentro de la cadena
+	 * @param line char Una de las filas del archivo
+	 * @param searchFor String que contiene el patron a buscar
+	 * @return La posicion en la que se encuentra el patron dentro de la cadena. -1 si no se encontra
+	 */	
 	public int boyerMooreAlgorithm(char[] line, String searchFor) {
 		int count = 0;
 		int table[] = new int[256] ;
