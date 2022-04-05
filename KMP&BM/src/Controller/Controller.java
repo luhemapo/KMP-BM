@@ -1,6 +1,5 @@
 package Controller;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -10,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Highlighter;
 
@@ -26,6 +24,7 @@ public class Controller implements ActionListener {
 	public Controller() {
 		viewW = new ViewWindow();
 		viewS = new ViewSearch();
+		algorithm = new Algorithm();
 
 		viewW.getBt_KMP().addActionListener(this);
 		viewW.getBt_BM().addActionListener(this);
@@ -37,8 +36,7 @@ public class Controller implements ActionListener {
 	}
 
 	public String readTxt(File txtfile) {
-		String txt = "";
-
+		String txt ="";
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(txtfile));
@@ -58,7 +56,7 @@ public class Controller implements ActionListener {
 				}
 			}
 		}
-		texto = txt;
+		texto=txt;
 		return txt;
 	}
 
@@ -73,7 +71,6 @@ public class Controller implements ActionListener {
 			viewS.setVisible(true);
 			String file = readTxt(jfc.getSelectedFile());
 			viewS.showfile(file);
-			algorithm = new Algorithm(file);
 
 		} else {
 			viewW.showMessage("No file selected", "Error");
@@ -90,7 +87,6 @@ public class Controller implements ActionListener {
 		}else {
 			matchesFound = algorithm.KMPAlgorithm(texto.toLowerCase(),searchFor.toLowerCase());
 		}
-	
 		int start;
 		int end;
 		Highlighter highlighter = viewS.getHighlighter();
@@ -109,8 +105,13 @@ public class Controller implements ActionListener {
 	}
 	
 	public void runSearchBM() {
+		ArrayList<Integer> matchesFound = new ArrayList<Integer>();
 		String searchFor = viewS.getTf_text().getText();
-		ArrayList<Integer> matchesFound = algorithm.bmReadLines(searchFor);
+		if(viewS.getCheck().isSelected()) {
+			matchesFound = algorithm.bmReadLines(texto,searchFor);
+		}else {
+			matchesFound = algorithm.bmReadLines(texto.toLowerCase(),searchFor.toLowerCase());
+		}
 		int start;
 		int starC=0;;
 		int endC=0;;

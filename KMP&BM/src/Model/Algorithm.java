@@ -1,33 +1,27 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Algorithm {
-	public ArrayList<String> linesOnFile = new ArrayList<>();
 	public ArrayList<Integer> ans = new ArrayList<>();
 
-	public Algorithm(String file) {
+	public Algorithm() {
 
-		linesOnFile = new ArrayList<String>();
-		Collections.addAll(linesOnFile, file.split("\n"));
 	}
 
+	public ArrayList<Integer> bmReadLines(String texto,String searchFor) {
 
-	
-	public ArrayList<Integer> bmReadLines(String search) {
-
+		String[] linesOnFile = texto.split("\n");
 		String line = "";
-		String searchFor = search.toLowerCase();
 		int result = 0;
 		int total = 0;
 		int count=0;
 		boolean flag = true;
 		ArrayList<Integer> location = new ArrayList<>();
 		try {
-			for (int i = 0; i < linesOnFile.size(); i++) {
-				line = linesOnFile.get(i).trim();
-				char[] txt= line.toLowerCase().toCharArray();
+			for (int i = 0; i < linesOnFile.length; i++) {
+				line = linesOnFile[i];
+				char[] txt= line.toCharArray();
 				result = boyerMooreAlgorithm(txt, searchFor);
 				if (result != -1) {
 					total += result;
@@ -65,7 +59,7 @@ public class Algorithm {
 					}
 					
 				}
-				total += linesOnFile.get(i).length() + 1;
+				total += linesOnFile[i].length() + 1;
 			}
 		}catch(IndexOutOfBoundsException e) {
 			
@@ -73,6 +67,7 @@ public class Algorithm {
 		return location;
 
 	}
+	
 	public ArrayList<Integer> KMPAlgorithm(String line, String searchFor) {
 		int m = searchFor.length();
 		int n = line.length();
@@ -101,22 +96,9 @@ public class Algorithm {
 		
 		return ans;
 	}
-	
-	public int[] BoyerMooreTable(int[] table, char[] searchFor, int ptnLen) {
-		int count = 0;
-
-	    for(count = 0; count < table.length; count++){
-	    	table[count] = ptnLen;
-	    }
-
-	    for(count = 0; count < ptnLen; count++){
-	    	table[(int)searchFor[count]] = ptnLen - count - 1;
-	    }
-
-	    return table;
-	}
-	
+		
 	public int boyerMooreAlgorithm(char[] line, String searchFor) {
+		int count = 0;
 		int table[] = new int[256] ;
 		int txtLen = 0;
 		int ptnLen = 0;
@@ -126,7 +108,13 @@ public class Algorithm {
 		txtLen = line.length;
 		ptnLen = searchFor.toCharArray().length;
 		
-		table= BoyerMooreTable(table, searchFor.toCharArray(),ptnLen);
+		for(count = 0; count < table.length; count++){
+	    	table[count] = ptnLen;
+	    }
+
+	    for(count = 0; count < ptnLen; count++){
+	    	table[(int)searchFor.toCharArray()[count]] = ptnLen - count - 1;
+	    }
 
 
 	    i = j = ptnLen - 1; 
@@ -153,7 +141,5 @@ public class Algorithm {
 		    return -1;
 	    }
 	}
-
-	
 	
 }
